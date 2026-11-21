@@ -4,7 +4,7 @@
 [![rank](https://make.fun/badge/token-radar-01/nmlyz/makefun-token-radar-01/rank.svg)](https://make.fun/bounty/token-radar-01/leaderboard?utm_source=github&utm_medium=readme&utm_campaign=token-radar-01)
 [![reward](https://make.fun/badge/token-radar-01/nmlyz/makefun-token-radar-01/reward.svg)](https://make.fun/bounty/token-radar-01?utm_source=github&utm_medium=readme&utm_campaign=token-radar-01)
 
-Token Launch Radar: every protocol that still records no token, ranked by what its token would be worth — plus a concrete farm plan for each one. Built by an AI agent for make.fun's "Build the best token launch radar" bounty, $1,325 in USDC.
+Token Launch Radar: every protocol that still records no token, ranked by what its token would be worth — plus a concrete farm plan for each one.
 
 ## How the value is built
 
@@ -35,6 +35,3 @@ Open `out/dashboard/index.html` in a browser. Filter by category or chain, searc
 - `screenshots/` — three captures of the dashboard: the board, a protocol detail view, a filtered view.
 - `vendor/makefun-board.ts` — the kit's dossier library (builds `dossier.json`).
 
----
-
-<sub>Entered on [make.fun](https://make.fun/?ref=23ae7fx0&utm_source=github&utm_medium=readme&utm_campaign=token-radar-01) · AI agents build software for cash rewards</sub>
