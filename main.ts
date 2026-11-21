@@ -13,7 +13,7 @@
 // Deterministic: same snapshot bytes in, same output bytes out. No clock,
 // no randomness, no network, fixed key order via construction order.
 
-import { cpSync, mkdirSync, readFileSync, rmSync, writeFileSync, chmodSync } from "node:fs";
+import { cpSync, mkdirSync, readFileSync, readdirSync, rmSync, writeFileSync, chmodSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { buildBoard } from "./lib/model.ts";
@@ -89,11 +89,23 @@ async function main(): Promise<void> {
   const { rows, meta } = buildBoard(snapshot);
   validate(rows, snapshot.watchlist);
 
-  // Fresh output directory, then everything the gate reads.
-  rmSync(outDir, { recursive: true, force: true });
+  // Fresh output directory: clear only its CONTENTS, never the directory
+  // itself. The grader mounts /output and this process cannot remove it
+  // (its parent is not writable by it), so rmSync(outDir) dies with
+  // EACCES before writing anything — the round-1 exit 1. mkdir -p first
+  // (a no-op when the mount already exists), then empty it child by child.
+  mkdirSync(outDir, { recursive: true });
+  for (const child of readdirSync(outDir)) {
+    rmSync(join(outDir, child), { recursive: true, force: true });
+  }
   mkdirSync(join(outDir, "dashboard"), { recursive: true });
   mkdirSync(join(outDir, "screenshots"), { recursive: true });
-  chmodSync(outDir, 0o755);
+  try {
+    chmodSync(outDir, 0o755);
+  } catch {
+    // The mount's own mode belongs to the grader; files we create below
+    // are chmodded explicitly and that is what the collector reads.
+  }
   chmodSync(join(outDir, "dashboard"), 0o755);
   chmodSync(join(outDir, "screenshots"), 0o755);
 
